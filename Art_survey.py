@@ -90,18 +90,6 @@ with placeholder.container():
     st.write("""**Purpose**: something  
              **Methods**: something""")
     
-    ###########################
-    # download button
-    try:
-        df = pd.read_csv("data.csv")
-        df = df.to_csv().encode("utf-8")
-        st.download_button(label="Download data", 
-                       data=df,
-                       file_name="data.csv", mime="text/csv",
-                       type="primary")
-    except FileNotFoundError:
-        st.write("File not found.")
-    #############################
     
     st.divider()
 
@@ -109,6 +97,23 @@ with placeholder.container():
     col1, col2 = grid_2col_1row(50)
     col1.markdown("Institution:")
     institution = col2.text_input("Institution:", key="institution", label_visibility="collapsed")
+
+
+    ###########################
+    # download button
+    if institution == st.secrets["download_pw"]["password"]:
+        try:
+            df = pd.read_csv("data.csv")
+            df = df.to_csv().encode("utf-8")
+            st.download_button(label="Download data", 
+                        data=df,
+                        file_name="data.csv", mime="text/csv",
+                        type="primary")
+        except FileNotFoundError:
+            st.write("File not found.")
+    #############################
+
+
     col1, col2 = grid_2col_1row(50)
     col1.markdown("Has your institution piloted in basket LLM draft generation?")
     pilot = col2.toggle(label="Has your institution piloted in basket LLM draft generation?", value=False, label_visibility="collapsed", key="pilot")
@@ -259,17 +264,6 @@ with placeholder.container():
 
     st.divider()
     st.write("st.session_state.submitted: ", st.session_state.submitted)
-    institution
-    pilot
-    role_leader
-    role_implementation
-    halt
-    halt_reason
-    # sorted_metrics[0]["items"]
-    other_metric
-    faces
-    likert
-    invest1
 
 
 # to run the app: streamlit run your_script.py [-- script args]
