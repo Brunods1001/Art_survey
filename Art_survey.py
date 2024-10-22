@@ -2,7 +2,11 @@
 # to run the app: streamlit run your_script.py [-- script args]
 # ctrl + c to stop the app
 
-# spreadsheet = "https://docs.google.com/spreadsheets/d/1FXNwpfF0X8MVQhIrMSzeK-N4DJgc0Jd6eUvL6xfO6PY/edit?usp=sharing"
+# git status
+# git add Art_survey.py requirements.txt
+# git commit -m "Updated"
+# git push
+# git log
 
 # Notes from meeting with Will 10/16/24
 # only show questions if they have piloted
@@ -15,8 +19,8 @@
 import streamlit as st
 from streamlit_sortables import sort_items
 import pandas as pd
-from streamlit_gsheets import GSheetsConnection
-conn = st.connection("gsheets", type=GSheetsConnection)
+# from streamlit_gsheets import GSheetsConnection
+# conn = st.connection("gsheets", type=GSheetsConnection)
 
 # st.toast('Ready!', icon='🥞')
 
@@ -91,6 +95,16 @@ with placeholder.container():
     st.caption("Some caption here")
     st.write("""**Purpose**: something  
              **Methods**: something""")
+    
+    ###########################
+    # download button
+    df = pd.read_csv("data.csv")
+    df = df.to_csv().encode("utf-8")
+    st.download_button(label="Download data", 
+                       data=df,
+                       file_name="data.csv", mime="text/csv",
+                       type="primary")
+    #############################
     st.divider()
 
     st.subheader("About you")
@@ -218,6 +232,11 @@ with placeholder.container():
         # invest3 = st.select_slider("After piloting LLM draft generation at your institution, do you plan to increase, maintain, or reduce investment into LLM draft generation?",
         #                 options=["reduce", "maintain", "increase"], value="maintain")
 
+    
+    
+    
+    
+    ##########################################################################################################
     st.divider()
     
     st.subheader("Troubleshooting")
@@ -239,19 +258,7 @@ with placeholder.container():
                                         "invest1"])
     st.dataframe(df)
     df = pd.concat([pd.DataFrame([df_row], columns=df.columns), df], ignore_index=True)
-
-    df = pd.DataFrame(columns=['a', 'b'])
-    st.dataframe(df)
-    for i in range(5):
-        random_row = [i, i+1]
-        df = pd.concat([pd.DataFrame([random_row], columns=df.columns), df], ignore_index=True)
-    st.dataframe(df)
-
-    # df = pd.DataFrame([
-    #     {"institution":institution, "pilot":pilot, "role_leader":role_leader, "role_implementation":role_implementation, "role_y":role_y, "halt":halt, "halt_reason":halt_reason,
-    #      "sorted_metrics":sorted_metrics[0]["items"], "other_metric":other_metric, "faces":faces, "likert":likert, 
-    #      "invest1":invest1}
-    # ])
+    
     st.divider()
     st.write("st.session_state.submitted: ", st.session_state.submitted)
     institution
