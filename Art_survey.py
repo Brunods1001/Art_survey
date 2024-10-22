@@ -86,9 +86,9 @@ if st.session_state.submitted:
 # else:
 with placeholder.container():
     st.title("In Basket LLM draft generation survey")
-    st.caption("Some caption here")
-    st.write("""**Purpose**: something  
-             **Methods**: something""")
+    st.caption("Could put a caption here")
+    st.write("""**Purpose**: could explain  
+             **Methods**: some things here""")
     
     
     st.divider()
@@ -235,7 +235,16 @@ with placeholder.container():
         # invest3 = st.select_slider("After piloting LLM draft generation at your institution, do you plan to increase, maintain, or reduce investment into LLM draft generation?",
         #                 options=["reduce", "maintain", "increase"], value="maintain")
 
-    
+    st.divider()
+
+    with st.form(key="form", border=False):
+        df_row = [institution, pilot, role_leader, role_implementation, halt, halt_reason, 
+                    # sorted_metrics[0]["items"], 
+                    other_metric, 
+                    faces, likert, 
+                    invest1]
+        st.session_state.data = df_row
+        st.form_submit_button(label="Done! Submit!", on_click=submitted, type="primary")
     
     
     
@@ -243,17 +252,6 @@ with placeholder.container():
     st.divider()
     
     st.subheader("Troubleshooting")
-    # if st.session_state.institution="1K3A"
-        # wrap in fragment to prevent app from rerunning when someone clicks this
-        # https://docs.streamlit.io/develop/concepts/architecture/fragments
-    with st.form(key="form"):
-        df_row = [institution, pilot, role_leader, role_implementation, halt, halt_reason, 
-                    # sorted_metrics[0]["items"], 
-                    other_metric, 
-                    faces, likert, 
-                    invest1]
-        st.session_state.data = df_row
-        st.form_submit_button(label="Submit", on_click=submitted)
     df = pd.DataFrame([df_row], columns=["institution", "pilot", "role_leader", "role_implementation", 
                                         "halt", "halt_reason",
                                         #  "sorted_metrics", 
@@ -262,7 +260,6 @@ with placeholder.container():
     st.dataframe(df)
     df = pd.concat([pd.DataFrame([df_row], columns=df.columns), df], ignore_index=True)
 
-    st.divider()
     st.write("st.session_state.submitted: ", st.session_state.submitted)
 
 
