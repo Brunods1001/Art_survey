@@ -1,12 +1,4 @@
 # Main script for Art survey data collection
-# to run the app: streamlit run your_script.py [-- script args]
-# ctrl + c to stop the app
-
-# git status
-# git add Art_survey.py requirements.txt
-# git commit -m "Updated"
-# git push
-# git log
 
 # Notes from meeting with Will 10/16/24
 # only show questions if they have piloted
@@ -67,6 +59,8 @@ def submitted():
     st.balloons()
 if "submitted" not in st.session_state:
     st.session_state.submitted = False
+
+
 halt_reason=""
 other_metric=""
 role_leader=""
@@ -98,13 +92,17 @@ with placeholder.container():
     
     ###########################
     # download button
-    df = pd.read_csv("data.csv")
-    df = df.to_csv().encode("utf-8")
-    st.download_button(label="Download data", 
+    try:
+        df = pd.read_csv("data.csv")
+        df = df.to_csv().encode("utf-8")
+        st.download_button(label="Download data", 
                        data=df,
                        file_name="data.csv", mime="text/csv",
                        type="primary")
+    except FileNotFoundError:
+        st.write("File not found.")
     #############################
+    
     st.divider()
 
     st.subheader("About you")
@@ -258,7 +256,7 @@ with placeholder.container():
                                         "invest1"])
     st.dataframe(df)
     df = pd.concat([pd.DataFrame([df_row], columns=df.columns), df], ignore_index=True)
-    
+
     st.divider()
     st.write("st.session_state.submitted: ", st.session_state.submitted)
     institution
@@ -272,3 +270,13 @@ with placeholder.container():
     faces
     likert
     invest1
+
+
+# to run the app: streamlit run your_script.py [-- script args]
+# ctrl + c to stop the app
+
+# git status
+# git add Art_survey.py requirements.txt
+# git commit -m "Updated"
+# git push
+# git log
